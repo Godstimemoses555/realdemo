@@ -52,7 +52,7 @@ const Navbar = ({ product }) => {
           <Heart
             size={24}
             className="text-red-500 cursor-pointer hover:scale-110 transition-transform"
-            onClick={handleAddFavorite}
+           
           />
         </li>
       </ul>

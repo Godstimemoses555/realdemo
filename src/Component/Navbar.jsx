@@ -29,7 +29,7 @@ const Navbar = () => {
         {/* Right: Icons + Hamburger */}
         <div className="flex items-center gap-4">
           {/* Favorite Heart */}
-          <button className="relative" onClick={() => navigate("/favorites")}>
+          <button className="relative" onClick={() => navigate("/Cart")}>
             <Heart
               size={26}
               className="text-red-500 hover:scale-110 transition-transform"
@@ -42,7 +42,7 @@ const Navbar = () => {
           </button>
 
           {/* Cart Icon */}
-          <button className="relative" onClick={() => navigate("/cart")}>
+          <button className="relative" onClick={() => navigate("/Cart")}>
             <ShoppingCart
               size={26}
               className="text-blue-600 hover:scale-110 transition-transform"
@@ -63,21 +63,26 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden flex flex-col items-center justify-center bg-white border-t border-gray-200 px-6 py-4 gap-4">
+        <div className="md:hidden flex flex-col items-center justify-center bg-white border-t border-gray-200 px-6 py-4 gap-4 h-[400px]">
           {/* Back to Home Button */}
           <button
             onClick={() => { navigate("/"); setMenuOpen(false); }}
-            className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition"
+            className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-bold text-[20px]"
           >
             <ArrowLeft size={16} /> Back to Home
           </button>
 
           {/* Mobile Links */}
-          <Link to="/storepage" onClick={() => setMenuOpen(false)} className="hover:text-blue-600 transition">
+          <Link to="/storepage" onClick={() => setMenuOpen(false)} className="hover:text-blue-600 transition font-bold text-[30px]">
             Shop
           </Link>
-          <Link to="/cart" onClick={() => setMenuOpen(false)} className="hover:text-blue-600 transition">
+          <Link to="/cart" onClick={() => setMenuOpen(false)} className="hover:text-blue-600 transition font-bold text-[30px]">
             Cart
+          </Link>
+
+          <Link to="/Cart" onClick={() => setMenuOpen(false)} className="hover:text-blue-600 transition font-bold text-[30px]">
+           
+           Favorite ❤️
           </Link>
         </div>
       )}

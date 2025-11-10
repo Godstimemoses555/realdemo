@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Trash2, Plus, Minus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+
+
+
+
 const Cart = () => {
   const navy = useNavigate();
   const [cartItems, setCartItems] = useState([]);
-  const [userInfo, setUserInfo] = useState({ name: "", address: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", address: "", email: "" });
+  
+
+  // const handlesubmit=(e)=>{
+  //   e.preventDefault();
+  //   if (userInfo.name==="" || userInfo.address===""){
+  //     setEmptyField(true);
+  //   }
+  // }
 
   // ✅ Fetch cart items + favorites
   useEffect(() => {
@@ -85,14 +97,43 @@ const Cart = () => {
     0
   );
 
-  // ✅ Handle payment
-  const handlePayment = () => {
-    if (!userInfo.name || !userInfo.address) {
-      alert("Please fill out your details before making payment.");
-      return;
+
+
+const handlepayment=()=>{
+    //  if (name==="" || email==="" || address===""){
+    //   setEmptyField(true);
+    // }
+   if (window.MonnifySDK) {
+      window.MonnifySDK.initialize({
+        amount: totalAmount, // Amount in Naira
+            currency: "NGN",
+            reference: new Date().getTime().toString(), // Unique transaction reference
+            customerName: userInfo.name,
+            customerEmail: userInfo.email,
+            apiKey: "MK_TEST_M0UQJ655E1", // Replace with your actual public key
+            paymentDescription: "Payment for school fees", // 👈 REQUIRED
+            contractCode: "3820540359", 
+            metadata: {
+    product: "Product Fees",
+  },
+  onComplete: function(response) {
+              // Handle successful payment completion
+              console.log("Payment successful:", response);
+              alert("Payment successful!");
+            },
+            onClose: function() {
+              // Handle payment modal close
+              console.log("Payment modal closed.");
+            },
+
+      })
+
     }
-    alert(`Payment of ₦${totalAmount.toLocaleString()} successful!`);
-  };
+   
+    else {
+          console.error("Monnify SDK not loaded.");
+        }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 flex flex-col lg:flex-row gap-8 lg:justify-center">
@@ -186,6 +227,9 @@ const Cart = () => {
             className="border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:ring-2 focus:ring-blue-400 outline-none"
           />
 
+          <input className="border border-gray-300 rounded-lg px-4 py-2 
+          text-sm sm:text-base focus:ring-2 focus:ring-blue-400 outline-none" onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })} type="Email"  placeholder="Enter Your Email"/>
+
           <textarea
             placeholder="Address"
             rows="3"
@@ -204,7 +248,7 @@ const Cart = () => {
           </div>
 
           <button
-            onClick={handlePayment}
+            onClick={handlepayment}
             className="mt-4 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition text-sm sm:text-base"
           >
             Make Payment

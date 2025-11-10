@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ArrowLeft, ShoppingCart, Menu, X } from "lucide-react";
+import { Search, ArrowLeft, ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDommy } from "../../Store";
 
@@ -9,7 +9,6 @@ const NavbarWithSearch = () => {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const containerRef = useRef(null);
@@ -19,7 +18,6 @@ const NavbarWithSearch = () => {
     const handler = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
         setOpenSearch(false);
-        setMobileMenu(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -48,10 +46,10 @@ const NavbarWithSearch = () => {
   return (
     <div
       ref={containerRef}
-      className="fixed top-[70px] left-0 right-0 bg-white/80 backdrop-blur-md shadow-md z-40 px-5 py-3 flex items-center justify-between border-b border-gray-200"
+      className="fixed top-[70px] left-0 right-0 bg-white/80 backdrop-blur-md shadow-md z-40 px-4 sm:px-5 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-gray-200 gap-2 sm:gap-0"
     >
       {/* Logo and pages */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between">
         <Link
           to="/Cart"
           className="text-2xl font-bold text-blue-600 hover:scale-105 transition-transform"
@@ -68,20 +66,12 @@ const NavbarWithSearch = () => {
             Shop
           </Link>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden ml-2 p-2 rounded-lg border hover:bg-gray-100 transition"
-          onClick={() => setMobileMenu(!mobileMenu)}
-        >
-          {mobileMenu ? <X size={20} /> : <Menu size={20} />}
-        </button>
       </div>
 
       {/* Search input */}
-      <div className="relative flex-1 max-w-lg mx-2 md:mx-6">
+      <div className="relative flex-1 max-w-full sm:max-w-lg w-full">
         <motion.div
-          animate={{ width: openSearch ? "100%" : "100%" }}
+          animate={{ width: "100%" }}
           transition={{ type: "spring", stiffness: 250, damping: 30 }}
           className="flex items-center bg-gray-100 rounded-full px-3 py-2 border border-gray-200"
         >
@@ -113,9 +103,9 @@ const NavbarWithSearch = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 z-50"
+              className="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 z-50 sm:max-h-64 max-h-[60vh] overflow-y-auto"
             >
-              <div className="p-2 max-h-64 overflow-y-auto">
+              <div className="p-2">
                 {filtered.length > 0 ? (
                   filtered.map((item, index) => (
                     <div
@@ -162,7 +152,7 @@ const NavbarWithSearch = () => {
       </div>
 
       {/* Right section */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-1 border px-3 py-2 rounded-lg hover:bg-gray-100 transition text-gray-700"
@@ -178,26 +168,6 @@ const NavbarWithSearch = () => {
           <ShoppingCart size={18} />
         </Link>
       </div>
-
-      {/* Mobile Menu Items */}
-      {mobileMenu && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden z-50 flex flex-col py-2 border-t border-gray-200">
-          <Link
-            to="/"
-            onClick={() => setMobileMenu(false)}
-            className="px-5 py-2 hover:bg-gray-100"
-          >
-            Home
-          </Link>
-          <Link
-            to="/storepage"
-            onClick={() => setMobileMenu(false)}
-            className="px-5 py-2 hover:bg-gray-100"
-          >
-            Shop
-          </Link>
-        </div>
-      )}
     </div>
   );
 };

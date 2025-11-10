@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ArrowLeft, ShoppingCart } from "lucide-react";
+import { Search, ArrowLeft, ShoppingCart, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDommy } from "../../Store";
 
@@ -9,6 +9,7 @@ const NavbarWithSearch = () => {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
   const [openSearch, setOpenSearch] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const containerRef = useRef(null);
@@ -18,6 +19,7 @@ const NavbarWithSearch = () => {
     const handler = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
         setOpenSearch(false);
+        setMobileMenu(false);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -57,6 +59,7 @@ const NavbarWithSearch = () => {
           Shop<span className="text-gray-800">Ease</span>
         </Link>
 
+        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-4 text-gray-700 font-medium">
           <Link to="/" className="hover:text-blue-600 transition">
             Home
@@ -65,12 +68,20 @@ const NavbarWithSearch = () => {
             Shop
           </Link>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden ml-2 p-2 rounded-lg border hover:bg-gray-100 transition"
+          onClick={() => setMobileMenu(!mobileMenu)}
+        >
+          {mobileMenu ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
       {/* Search input */}
-      <div className="relative flex-1 max-w-lg mx-6">
+      <div className="relative flex-1 max-w-lg mx-2 md:mx-6">
         <motion.div
-          animate={{ width: openSearch ? "100%" : "60%" }}
+          animate={{ width: openSearch ? "100%" : "100%" }}
           transition={{ type: "spring", stiffness: 250, damping: 30 }}
           className="flex items-center bg-gray-100 rounded-full px-3 py-2 border border-gray-200"
         >
@@ -167,6 +178,26 @@ const NavbarWithSearch = () => {
           <ShoppingCart size={18} />
         </Link>
       </div>
+
+      {/* Mobile Menu Items */}
+      {mobileMenu && (
+        <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden z-50 flex flex-col py-2 border-t border-gray-200">
+          <Link
+            to="/"
+            onClick={() => setMobileMenu(false)}
+            className="px-5 py-2 hover:bg-gray-100"
+          >
+            Home
+          </Link>
+          <Link
+            to="/storepage"
+            onClick={() => setMobileMenu(false)}
+            className="px-5 py-2 hover:bg-gray-100"
+          >
+            Shop
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
